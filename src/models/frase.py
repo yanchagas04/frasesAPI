@@ -13,4 +13,4 @@ class FraseCreateEdit(BaseModel):
 
 class FraseResponse(BaseModel):
     status: str
-    frase: Frase
+    frase: Frase | None
