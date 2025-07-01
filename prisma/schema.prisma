@@ -1,0 +1,16 @@
+generator client {
+    provider = "prisma-client-py"
+    output = "lib/prisma"
+}
+
+datasource db {
+    provider = "sqlite"
+    url      = env("DATABASE_URL")
+}
+
+model Frase {
+    id      Int     @id @default(autoincrement())
+    frase   String
+    autor   String
+    data    DateTime
+}
