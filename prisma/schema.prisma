@@ -1,6 +1,6 @@
 generator client {
     provider = "prisma-client-py"
-    output = "lib/prisma"
+    output = "../lib/prisma"
 }
 
 datasource db {
@@ -10,7 +10,7 @@ datasource db {
 
 model Frase {
     id      Int     @id @default(autoincrement())
-    frase   String
+    texto   String
     autor   String
-    data    DateTime
+    data    DateTime @default(now())
 }

@@ -1,4 +1,4 @@
 .env
 .dev
 prisma/database
-lib/prisma
+lib
