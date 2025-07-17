@@ -29,3 +29,53 @@ async def frase_por_id(id: int) -> FraseResponse | ErrorResponse:
             status = status.HTTP_500_INTERNAL_SERVER_ERROR,
             message = str(e)
         )
+    
+async def frases_por_autor(autor: str) -> FraseResponse | ErrorResponse:
+    try:
+        frases : list[Frase] = await prisma.frase.find_many({
+            "where": {
+                "autor": autor
+            }
+        })
+        if len(frases) == 0:
+            return ErrorResponse(
+                status = status.HTTP_404_NOT_FOUND,
+                message = 'Nenhuma frase encontrada para o autor informado'
+            )
+        return FraseResponse(
+            status = status.HTTP_200_OK,
+            frase = frases
+        )
+    except MissingRequiredValueError:
+        return ErrorResponse(
+            status = status.HTTP_400_BAD_REQUEST,
+            message = 'O autor da frase é obrigatório'
+        )
+    except Exception as e:
+        return ErrorResponse(
+            status = status.HTTP_500_INTERNAL_SERVER_ERROR,
+            message = str(e)
+        )
+    
+async def top_frases() -> FraseResponse | ErrorResponse:
+    try:
+        frases : list[Frase] = await prisma.frase.find_many({
+            "orderBy": {
+                "data": "desc"
+            },
+            "take": 10
+        })
+        if len(frases) == 0:
+            return ErrorResponse(
+                status = status.HTTP_404_NOT_FOUND,
+                message = 'Nenhuma frase encontrada'
+            )
+        return FraseResponse(
+            status = status.HTTP_200_OK,
+            frase = frases
+        )
+    except Exception as e:
+        return ErrorResponse(
+            status = status.HTTP_500_INTERNAL_SERVER_ERROR,
+            message = str(e)
+        )
